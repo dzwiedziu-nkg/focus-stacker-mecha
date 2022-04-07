@@ -14,14 +14,10 @@
 #include <ESPAsyncTCP.h>
 #endif
 #include <ESPAsyncWebServer.h>
-
+#include "motor_camera.h"
 
 int state = LOW;
 int LED = LED_BUILTIN;
-char ON = LOW;
-char OFF = HIGH;
-char RUN = HIGH;
-char STOP = LOW;
 
 
 AsyncWebServer server(80);
@@ -39,19 +35,7 @@ void setup() {
 
     Serial.begin(9600);
   
-    // init GPIO for control mecha and camera
-    pinMode(LED, OUTPUT);
-    pinMode(D0, OUTPUT); // Camera take photo 
-    pinMode(D1, OUTPUT); // Camera AF
-    pinMode(D2, OUTPUT); // motor IN1
-    pinMode(D3, OUTPUT); // motor IN2
-  
-    digitalWrite(LED, OFF);
-    digitalWrite(D0, OFF);
-    digitalWrite(D1, OFF);
-    digitalWrite(D2, STOP);
-    digitalWrite(D3, STOP);
-    // end of GPIO config
+    init_mc();
 
     // config WiFi connection
     WiFi.mode(WIFI_STA);
@@ -105,32 +89,6 @@ void setup() {
 }
 
 void loop() {
-  // Pause for stabilize camera
-  delay(500); 
-
-  // Camera AF
-  digitalWrite(D0, OFF);
-  digitalWrite(D1, ON);
-  delay(500); // (1s for stabilize)
-  
-  // Camera take foto
-  digitalWrite(D0, ON);
-  digitalWrite(D1, ON);
-  delay(1000);
-  
-  // Pause after take photo (max 2s exposure)
-  digitalWrite(D0, OFF);
-  digitalWrite(D1, OFF);
-  delay(1000);
-  
-  // Run motor
-  digitalWrite(LED, ON);
-  digitalWrite(D2, RUN);
-  digitalWrite(D3, STOP);
-  delay(1000); // 1s  for motor running
-  
-  // Stop motor
-  digitalWrite(LED, OFF);
-  digitalWrite(D2, STOP);
-  digitalWrite(D3, STOP);
+  run_program();
+  delay(100); 
 }
