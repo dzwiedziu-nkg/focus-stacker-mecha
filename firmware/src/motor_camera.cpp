@@ -1,5 +1,11 @@
-#include "Arduino.h"
 #include "motor_camera.h"
+
+#include <Arduino.h>
+
+#define D_MOTOR_PWMA D2
+#define D_MOTOR_DB D4
+#define D_CAMERA_FOCUS D1
+#define D_CAMERA_SHUTTER D0
 
 #define ON LOW
 #define OFF HIGH
@@ -16,36 +22,33 @@ int exposure_time = 5;
 int exposure_pause = 10;
 
 void camera_af() {
-  digitalWrite(D0, OFF);
-  digitalWrite(D1, ON);
+    digitalWrite(D_CAMERA_SHUTTER, OFF);
+    digitalWrite(D_CAMERA_FOCUS, ON);
 }
 
 void camera_take_photo() {  
-  digitalWrite(D0, ON);
-  digitalWrite(D1, ON);
+    digitalWrite(D_CAMERA_SHUTTER, ON);
+    digitalWrite(D_CAMERA_FOCUS, ON);
 }
   
 void camera_clear() {  
-  digitalWrite(D0, OFF);
-  digitalWrite(D1, OFF);
+    digitalWrite(D_CAMERA_SHUTTER, OFF);
+    digitalWrite(D_CAMERA_FOCUS, OFF);
 }
   
 void motor_forward() {
-  digitalWrite(BUILTIN_LED, ON);
-  digitalWrite(D2, RUN);
-  digitalWrite(D3, STOP);
+    digitalWrite(D_MOTOR_PWMA, RUN);
+    digitalWrite(D_MOTOR_DB, STOP);
 }
 
 void motor_backward() {
-  digitalWrite(BUILTIN_LED, ON);
-  digitalWrite(D2, STOP);
-  digitalWrite(D3, RUN);
+    digitalWrite(D_MOTOR_PWMA, RUN);
+    digitalWrite(D_MOTOR_DB, RUN);
 }
 
 void motor_stop() {
-  digitalWrite(BUILTIN_LED, OFF);
-  digitalWrite(D2, STOP);
-  digitalWrite(D3, STOP);
+    digitalWrite(D_MOTOR_PWMA, STOP);
+    digitalWrite(D_MOTOR_DB, STOP);
 }
 
 void program_idle() {
@@ -123,7 +126,6 @@ void program_test() {
         camera_clear();
     } else if (step < step_forward) {
         motor_forward();
-        motor_backward();
         camera_clear();
     } else if (step < step_forward_pause) {
         motor_stop();
@@ -141,17 +143,15 @@ void program_test() {
 }
 
 void init_mc() {
-    pinMode(BUILTIN_LED, OUTPUT);
-    pinMode(D0, OUTPUT); // Camera take photo 
-    pinMode(D1, OUTPUT); // Camera AF
-    pinMode(D2, OUTPUT); // motor IN1
-    pinMode(D3, OUTPUT); // motor IN2
+    pinMode(D_CAMERA_SHUTTER, OUTPUT); // Camera take photo 
+    pinMode(D_CAMERA_FOCUS, OUTPUT); // Camera AF
+    pinMode(D_MOTOR_PWMA, OUTPUT); // motor IN1
+    pinMode(D_MOTOR_DB, OUTPUT); // motor IN2
   
-    digitalWrite(BUILTIN_LED, OFF);
-    digitalWrite(D0, OFF);
-    digitalWrite(D1, OFF);
-    digitalWrite(D2, STOP);
-    digitalWrite(D3, STOP);
+    digitalWrite(D_CAMERA_SHUTTER, OFF);
+    digitalWrite(D_CAMERA_FOCUS, OFF);
+    digitalWrite(D_MOTOR_PWMA, STOP);
+    digitalWrite(D_MOTOR_DB, STOP);
 }
 
 void run_program() {
@@ -188,10 +188,10 @@ void switch_program(int p) {
 }
 
 void set_settings(int mt, int mp, int ft, int et, int ep) {
-    int motor_time = mt;
-    int motor_pause = mp;
-    int focus_time = ft;
-    int exposure_time = et;
-    int exposure_pause = ep;
+    motor_time = mt;
+    motor_pause = mp;
+    focus_time = ft;
+    exposure_time = et;
+    exposure_pause = ep;
     step = 0;
 }
