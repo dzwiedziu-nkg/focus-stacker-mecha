@@ -34,7 +34,10 @@
         ],
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "linebreak-style": "off"
+        "react/button-has-type": "off",
+        "react/jsx-indent": "warn",
+        "linebreak-style": "off",
+        "no-trailing-spaces": "warn"
     },
     "settings": {
         "import/resolver": {

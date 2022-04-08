@@ -1,2 +1,6 @@
-*.css
+/build
+/node_modules
+/public
 *.svg
+*.css
+*.js
