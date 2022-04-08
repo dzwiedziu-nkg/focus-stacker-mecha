@@ -195,3 +195,13 @@ void set_settings(int mt, int mp, int ft, int et, int ep) {
     exposure_pause = ep;
     step = 0;
 }
+
+void run_debug_program(int cf, int ce, int d, int pwm) {
+    step = 0;
+    program = PROGRAM_DEBUG;
+
+    digitalWrite(D_CAMERA_FOCUS, cf);
+    digitalWrite(D_CAMERA_SHUTTER, ce);
+    digitalWrite(D_MOTOR_DB, d);
+    digitalWrite(D_MOTOR_PWMA, pwm);
+}

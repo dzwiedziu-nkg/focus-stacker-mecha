@@ -7,6 +7,7 @@
 #define PROGRAM_PHOTO_FORWAD 3
 #define PROGRAM_PHOTO_BACKWAD 4
 #define PROGRAM_TEST 5
+#define PROGRAM_DEBUG 6
 
 extern int program;
 extern int motor_time;
@@ -19,5 +20,6 @@ void init_mc();
 void run_program();
 void switch_program(int p);
 void set_settings(int mt, int mp, int ft, int et, int ep);
+void run_debug_program(int cf, int ce, int d, int pwm);
 
 #endif

@@ -101,14 +101,29 @@ void api_set_program(AsyncWebServerRequest *request, JsonVariant &json) {
     api_get_status(request);
 }
 
+/* 
+ * JSON format (as typescript notation):
+ * {
+ *   "camera_focus": number,
+ *   "camera_shutter": number,
+ *   "motor_d": number,
+ *   "motor_pwm": number
+ * }
+ */
+void api_debug(AsyncWebServerRequest *request, JsonVariant &json) {
+    const JsonObject& jsonObj = json.as<JsonObject>();
+    run_debug_program(jsonObj["camera_focus"], jsonObj["camera_shutter"], jsonObj["motor_d"], jsonObj["motor_pwm"]);
+    api_get_status(request);
+}
+
 void notFound(AsyncWebServerRequest *request) {
     request->send(404, "text/plain", "Not found");
 }
 
 void init_server() {
     server.on("/api/status", HTTP_GET, api_get_status);
-    //server.on("/api/program", HTTP_POST, api_set_program);
     server.addHandler(new AsyncCallbackJsonWebHandler("/api/program", api_set_program));
+    server.addHandler(new AsyncCallbackJsonWebHandler("/api/debug", api_debug));
 
     SPIFFS.begin();
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
