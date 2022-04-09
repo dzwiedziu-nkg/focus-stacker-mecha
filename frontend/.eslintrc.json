@@ -37,7 +37,13 @@
         "react/button-has-type": "off",
         "react/jsx-indent": "warn",
         "linebreak-style": "off",
-        "no-trailing-spaces": "warn"
+        "no-trailing-spaces": "warn",
+        "import/prefer-default-export": "warn",
+        "react/jsx-props-no-spreading": "warn",
+        "object-curly-spacing": "warn",
+        "no-multiple-empty-lines": "warn",
+        "@typescript-eslint/no-empty-function": "warn",
+        "no-debugger": "warn"
     },
     "settings": {
         "import/resolver": {
