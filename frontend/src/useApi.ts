@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface SwitchProgramRequest {
@@ -30,6 +30,13 @@ function useApi() {
     axios.post<SwitchProgramResponse>('/api/program', request).then((response) => {
       setProgram(response.data.program);
     });
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios.get<SwitchProgramResponse>('/api/status').then((response) => { setProgram(response.data.program); });
+    }, 1000);
+    return () => { clearInterval(interval); };
   }, []);
 
   return { program, switchProgram };
